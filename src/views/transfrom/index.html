@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>图片base64在线转换</title>
+		
+		<link rel="shortcut icon" href="./img/tcico.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		
+		
+		<link rel="stylesheet" href="./css/elementui/index.css">
+		
+		
+		<link rel="stylesheet" type="text/css" href="./css/indexppp.css"/>
+	</head>
+	<body>
+	
+		<div class="wraaper" id="app">
+		    <div class="header">
+		      <div class="wrraaper">
+		        <div class="logo"></div>
+		      </div>
+		    </div>
+		    <div class="modal">
+		      <div class="wrraaper">
+		        <div class="footer1">
+		          在线图片加密解密
+		        </div>
+		        <div class="footer2">
+		          <div class="wenzi1">
+		            <div>选择图片:</div>
+		            <div style="margin-right: 30%">
+						<span>Base64编码:</span>
+						<span style="margin-left: 10px;">选择当前图片格式</span>
+						<select   v-model="selected">
+							<option value="jpg" selected>JPG</option>
+							<option value="png">PNG</option>
+						</select>
+					</div>
+		          </div>
+		          <div class="shangchuan">
+		            <div class="tup">
+		              <el-upload
+		                class="avatar-uploader"
+		                action=""
+		                ref="uploadAvatar"
+		                :show-file-list="false"
+		                :auto-upload="false"
+		                :on-change="changeFile"
+		                list-type="picture">
+		                <img v-if="imageUrl" :src="imageUrl" class="uploadAvatar">
+		                <el-button size="small" type="primary" v-if="!imageUrl">选择图片</el-button>
+		              </el-upload>
+		            </div>
+		            <div class="bianma">
+		              <el-input
+		                type="textarea"
+		                :rows="12"
+		                placeholder="Base64编码"
+		                v-model="textarea"
+						id='copy'>
+		              </el-input>
+		            </div>
+		          </div>
+		          <div class="tup">
+		
+		          </div>
+		        </div>
+		        <div class="footer3">
+		          <div class="wenzi-wrapper">
+		            *请上传小于1MB的JPG 或 PNG 或 BMP 或 GIF 或 TIFF 格式图片。
+		          </div>
+		          <div class="ann">
+		            <el-button size="small" type="primary" @click="zhuantup">图片转出Base64</el-button>
+		            <el-button size="small" type="primary" @click="zhuanbase">Base64还原成图片</el-button>
+		            <el-button size="small"  type="info" plain @click="qingk">清空结果</el-button>
+					<el-button size="small"  type="info" plain @click="fzhi">复制内容</el-button>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="footer"></div>
+		  </div>
+		
+		
+		
+		<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/index.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			
+		new Vue({
+			  el: '#app',
+			  data: function() {
+				return { 
+					imageUrl: '',
+					imageBaseUrl: '',
+					textarea:'',
+					selected:'jpg'
+				}
+			  },
+			  methods:{
+					/**文件框改变事件  @param file  @param fileList */
+					changeFile:function(file, fileList) {
+					  const isJPGORPNG = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/bmp' || file.raw.type === 'image/gif' || file.raw.type === 'image/tiff' );
+					  // console.log(file.raw.type,2222)
+					  const isLt1M = file.size / 1024 / 1024 < 1;
+			  
+					  if (!isJPGORPNG) {
+						   this.$message('图片只能是 JPG 或 PNG 或 BMP 或 GIF 或 TIFF 格式 !');
+					
+						return;
+					  }
+					  if (!isLt1M) {
+						this.$message.info('图片大小不能超过 1MB!');
+						
+						return;
+					  }
+			  
+					  let that = this;
+					  let reader = new FileReader();
+					  reader.readAsDataURL(file.raw);
+					  reader.onload = function(e){
+						this.result; //base64编码
+						that.imageBaseUrl = this.result;
+						that.imageUrl = this.result;
+					  }
+					},
+					zhuantup:function(){
+					  if (this.imageBaseUrl){
+						  
+						 let a =  this.imageBaseUrl.slice((this.imageBaseUrl.indexOf(",")+ 1)) 
+						 // console.log(a ,111)
+						this.textarea  = a
+					  }else {
+						// console.log(2121212)
+						this.$message({
+						  message: '请选择一张图片',
+						  type: 'warning'
+						});
+					  }
+					},
+					zhuanbase:function(){
+					  
+					  if (this.textarea){
+						  if(!this.selected){
+							  this.imageBaseUrl = this.textarea
+							  this.imageUrl = this.textarea
+						  }else{
+							  if(this.selected == 'jpg'){
+								  // this.textarea = 'data:image/jpeg;base64,' + this.textarea;
+								 let  a = 'data:image/jpeg;base64,' + this.textarea;
+								  this.imageBaseUrl = a
+								  this.imageUrl = a
+							  }else if(this.selected == 'png'){
+								  // this.textarea = 'data:image/png;base64,' + this.textarea;
+								  let  a ='data:image/png;base64,' + this.textarea;
+								  this.imageBaseUrl = a 
+								  this.imageUrl = a
+								  
+							  }
+						  }
+						
+					  }else {
+						this.$message({
+						  message: '请将Base64的编码复制在文本框内',
+						  type: 'warning',
+						 
+						});
+					
+					
+					  }
+			  
+					},
+					qingk:function(){
+					  if (this.imageBaseUrl || this.textarea){
+						this.textarea = ''
+						this.imageBaseUrl = ''
+						this.imageUrl = ''
+					  }else {
+						this.$message({
+						  message: '已经清空',
+						  type: 'warning'
+						});
+					  }
+					},
+					fzhi:function(){
+						if(this.textarea==''){
+							this.$message.error("文本框内没有东西")
+						}else{
+							var e = document.getElementById("copy");
+							e.select(); // 选择对象
+							document.execCommand("Copy"); // 执行浏览器复制命令
+							 this.$message({
+							  message: '复制成功',
+							  type: 'success'
+							});
+						}
+					}
+				  }
+			    })
+		
+	
+			 
+			
+		</script>
+	</body>
+</html>

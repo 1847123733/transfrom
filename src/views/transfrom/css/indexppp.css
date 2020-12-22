@@ -1,0 +1,26 @@
+ .wraaper{  margin: 0 auto;min-width: 1200px; }
+  .wrraaper{ width: 1200px;margin: 0 auto; }
+  .header{ background-color:rgb(0,108,191);height: 60px }
+  .logo{
+    background: url('../img/tccoLogo803.png') no-repeat center;
+	background-size: 101% 86%;
+    line-height: 60px;cursor: pointer;width:300px;height: 60px;
+  }
+  .footer1{ margin-top: 18px; font-size: 24px ;color: #777  }
+  .footer2{ margin-top: 20px }
+  .wenzi1{ font-size: 13px;line-height: 18px;color: #333333;display: flex;justify-content: space-between }
+  .shangchuan{ margin-top: 20px;height: 300px; display:flex;justify-content: space-between;}
+  .tup{
+    border: 1px solid #777777;
+    margin:0 auto;width: 49%;
+    display: flex;justify-content:center;align-items: center;
+  }
+  .bianma{ border: 1px solid #777777;width: 49%;display: flex;align-items: center }
+  .avatar-uploader{ width: 100%;height: 100%; }
+  .el-upload{ height: 100%;display: flex;justify-content: center;align-items: center  } 
+  /* .el-upload--picture{ width: 100%;height: 100%; } */
+  .tup .uploadAvatar{ height: 80%!important; }
+  .uploadAvatar{ height: 80%!important; }
+  .footer3{ display: flex;justify-content: space-between;margin-top: 5px;height: 50px }
+  .wenzi-wrapper{ font-size: 14px;margin-left: 20px;color: #777777 ;width: 49%;line-height: 50px }
+  .ann{ width: 49%;display: flex;justify-content: flex-end;align-items: center;margin-right: 20px }
